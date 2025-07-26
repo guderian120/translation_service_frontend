@@ -823,17 +823,17 @@
     <script>
         // AWS Cognito Configuration
         const cognitoConfig = {
-            UserPoolId: 'eu-west-1_CuXxHAfvC',
-            ClientId: '7f8f4ri5f1nmt2n5ertuf9lmuh',
+            UserPoolId: 'eu-west-1_yvDlCDRR9',
+            ClientId: '6n7dptacu23m1vnlbnb2n6qmds',
             Region: 'eu-west-1'
         };
 
         // S3 App Configuration
         const config = {
-            apiGatewayUrl: 'https://0llvez86ke.execute-api.eu-west-1.amazonaws.com/prod/upload',
-            originalFileUrl: 'https://0llvez86ke.execute-api.eu-west-1.amazonaws.com/prod/files', 
+            apiGatewayUrl: 'https://wc4f73e3l1.execute-api.eu-west-1.amazonaws.com/prod/upload',
+            originalFileUrl: 'https://wc4f73e3l1.execute-api.eu-west-1.amazonaws.com/prod/files', 
             presignedUrlEndpoint: 'endpoint-3',
-            listFilesEndpoint: 'https://0llvez86ke.execute-api.eu-west-1.amazonaws.com/prod/files',
+            listFilesEndpoint: 'https://wc4f73e3l1.execute-api.eu-west-1.amazonaws.com/prod/files',
             userFilesEndpoint: 'endpoint-5'
         };
 
@@ -927,7 +927,7 @@
     
     try {
         // Direct S3 URL (no API Gateway needed for GET)
-        const fileUrl = `https://translation-app-output-bucket-436291827edb6f38.s3.eu-west-1.amazonaws.com/${encodeURIComponent(fileName)}`;
+        const fileUrl = `https://translation-app-output-bucket-5cdf68b10eef828e.s3.eu-west-1.amazonaws.com/${encodeURIComponent(fileName)}`;
         
         console.log('Fetching file from:', fileUrl); // Debug log
         

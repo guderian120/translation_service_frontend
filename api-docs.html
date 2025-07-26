@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation App API Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #a5b4fc;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #94a3b8;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .app-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .app-title svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        
+        /* API Documentation Content */
+        .api-docs {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 1.5rem;
+            align-self: flex-start;
+        }
+        
+        .sidebar-nav {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+        }
+        
+        .sidebar-nav-item {
+            padding: 0.75rem 1.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .sidebar-nav-item:hover {
+            color: var(--primary);
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+        
+        .sidebar-nav-item.active {
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+        
+        .content {
+            flex: 1;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+        
+        /* API Section */
+        .api-section {
+            margin-bottom: 3rem;
+        }
+        
+        .api-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .api-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .api-endpoint {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background-color: var(--light);
+        }
+        
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .endpoint-method {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+        }
+        
+        .method-get {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .method-post {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        
+        .method-put {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .method-delete {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .endpoint-path {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9375rem;
+            color: var(--dark);
+        }
+        
+        .endpoint-description {
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        
+        /* Request/Response Sections */
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title svg {
+            width: 1rem;
+            height: 1rem;
+        }
+        
+        .code-block {
+            background-color: #f6f8fa;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-light);
+            margin-bottom: 1rem;
+        }
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray);
+            position: relative;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        /* Parameters Table */
+        .parameters-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        
+        .parameters-table th, 
+        .parameters-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-light);
+        }
+        
+        .parameters-table th {
+            font-weight: 600;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        .parameter-name {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--primary-dark);
+        }
+        
+        .parameter-type {
+            color: var(--gray);
+            font-size: 0.8125rem;
+        }
+        
+        /* API Key Section */
+        .api-key-section {
+            background-color: var(--light);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .api-key-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .api-key-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .btn svg {
+            width: 1rem;
+            height: 1rem;
+        }
+        
+        /* Images */
+        .api-image {
+            border-radius: 0.5rem;
+            border: 1px solid var(--gray-light);
+            margin: 1rem 0;
+            max-width: 100%;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .api-docs {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .endpoint-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="app-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Translation App API Documentation
+            </h1>
+        </header>
+        
+        <div class="api-docs">
+            <div class="sidebar">
+                <nav class="sidebar-nav">
+                    <a href="#authentication" class="sidebar-nav-item active">Authentication</a>
+                    <a href="#upload-files" class="sidebar-nav-item">Upload Files</a>
+                    <a href="#list-files" class="sidebar-nav-item">List Files</a>
+                    <a href="#get-file" class="sidebar-nav-item">Get File Content</a>
+                    <a href="#examples" class="sidebar-nav-item">Examples</a>
+                </nav>
+            </div>
+            
+            <div class="content">
+                <section id="authentication" class="api-section">
+                    <h2 class="api-section-title">Authentication</h2>
+                    
+                    <div class="api-endpoint">
+                        <div class="endpoint-header">
+                            <span class="endpoint-method method-post">POST</span>
+                            <span class="endpoint-path">Generate Token</span>
+                        </div>
+                        
+                        <div class="endpoint-description">
+                            <p>Scroll down to the last session and click on <code>GENERATE API KEY</code> for your keys.</p>
+                        </div>
+                        
+                        <div class="tabs">
+                            <div class="tab active" data-tab="auth-request">Request</div>
+                            <div class="tab" data-tab="auth-response">Response</div>
+                        </div>
+                        
+                        <!-- <div class="tab-content active" id="auth-request">
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+                                    <path d="M12 12v9"></path>
+                                    <path d="m16 16-4-4-4 4"></path>
+                                </svg>
+                                Headers
+                            </h3>
+                            
+                            <table class="parameters-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="parameter-name">Content-Type</td>
+                                        <td class="parameter-type">string</td>
+                                        <td>Must be <code>application/json</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                Body
+                            </h3>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-json">{
+    "email": "user@example.com",
+    "password": "yourpassword"
+}</code></pre>
+                            </div>
+                        </div> -->
+                        
+                        <div class="tab-content" id="auth-response">
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                Response
+                            </h3>
+                            
+                            <!-- <div class="code-block">
+                                <pre><code class="language-json">{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "expiresIn": 3600
+}</code></pre>
+                            </div> -->
+                        </div>
+                    </div>
+                    
+                    <p>After getting the key, include the token in the <code>Authorization</code> header for all requests:</p>
+                    
+                    <div class="code-block">
+                        <pre><code class="language-http">Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                    </div>
+                </section>
+                
+                <section id="upload-files" class="api-section">
+                    <h2 class="api-section-title">Upload Files</h2>
+                    
+                    <div class="api-endpoint">
+                        <div class="endpoint-header">
+                            <span class="endpoint-method method-put">PUT</span>
+                            <span class="endpoint-path">/api_upload/</span>
+                        </div>
+                        
+                        <div class="endpoint-description">
+                            <p>Upload a CSV file for translation. The file will be processed asynchronously, and you can check its status later.</p>
+                        </div>
+                        
+                        <div class="tabs">
+                            <div class="tab active" data-tab="upload-request">Request</div>
+                            <div class="tab" data-tab="upload-response">Response</div>
+                        </div>
+                        
+                        <div class="tab-content active" id="upload-request">
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+                                    <path d="M12 12v9"></path>
+                                    <path d="m16 16-4-4-4 4"></path>
+                                </svg>
+                                Headers
+                            </h3>
+                            
+                            <table class="parameters-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="parameter-name">Authorization</td>
+                                        <td class="parameter-type">string</td>
+                                        <td>Bearer token from authentication</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="parameter-name">Content-Type</td>
+                                        <td class="parameter-type">string</td>
+                                        <td><code>text/csv</code> or <code>application/octet-stream</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="parameter-name">Content-Length</td>
+                                        <td class="parameter-type">number</td>
+                                        <td>Size of the file in bytes</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                Body
+                            </h3>
+                            
+                            <p>The raw CSV file content as the request body.</p>
+                            
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                Example with cURL
+                            </h3>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-bash">curl -X PUT \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: text/csv" \
+  --data-binary "@/path/to/your/file.csv" \
+  https://api.example.com/upload/yourfile.csv</code></pre>
+                            </div>
+                            
+                            <img src="https://via.placeholder.com/800x400?text=Postman+Screenshot+for+File+Upload" alt="Postman file upload example" class="api-image">
+                        </div>
+                        
+                        <div class="tab-content" id="upload-response">
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                Response
+                            </h3>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-json">{
+    "message": "File uploaded successfully",
+    "filename": "yourfile contents",
+    "status": "complete",
+    "timestamp": "2023-06-15T12:34:56Z"
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="list-files" class="api-section">
+                    <h2 class="api-section-title">List Files</h2>
+                    
+                    <div class="api-endpoint">
+                        <div class="endpoint-header">
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/files</span>
+                        </div>
+                        
+                        <div class="endpoint-description">
+                            <p>Retrieve a list of all translated files available to the authenticated user.</p>
+                        </div>
+                        
+                        <div class="tabs">
+                            <div class="tab active" data-tab="list-request">Request</div>
+                            <div class="tab" data-tab="list-response">Response</div>
+                        </div>
+                        
+                        <div class="tab-content active" id="list-request">
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+                                    <path d="M12 12v9"></path>
+                                    <path d="m16 16-4-4-4 4"></path>
+                                </svg>
+                                Headers
+                            </h3>
+                            
+                            <table class="parameters-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="parameter-name">Authorization</td>
+                                        <td class="parameter-type">string</td>
+                                        <td>Bearer token from authentication</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                Example with cURL
+                            </h3>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-bash">curl -X GET \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  https://api.example.com/files</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="list-response">
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                Response
+                            </h3>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-json">{
+    "files": [
+        {
+            "filename": "translated_file1.csv",
+            "size": 1024,
+            "lastModified": "2023-06-15T12:34:56Z",
+            "status": "completed"
+        },
+        {
+            "filename": "translated_file2.csv",
+            "size": 2048,
+            "lastModified": "2023-06-14T10:22:33Z",
+            "status": "completed"
+        }
+    ]
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="get-file" class="api-section">
+                    <h2 class="api-section-title">Get File Content</h2>
+                    
+                    <div class="api-endpoint">
+                        <div class="endpoint-header">
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/files/{filename}</span>
+                        </div>
+                        
+                        <div class="endpoint-description">
+                            <p>Retrieve the content of a specific translated file. The response will be the raw CSV content.</p>
+                        </div>
+                        
+                        <div class="tabs">
+                            <div class="tab active" data-tab="get-request">Request</div>
+                            <div class="tab" data-tab="get-response">Response</div>
+                        </div>
+                        
+                        <div class="tab-content active" id="get-request">
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+                                    <path d="M12 12v9"></path>
+                                    <path d="m16 16-4-4-4 4"></path>
+                                </svg>
+                                Headers
+                            </h3>
+                            
+                            <table class="parameters-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="parameter-name">Authorization</td>
+                                        <td class="parameter-type">string</td>
+                                        <td>Bearer token from authentication</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="parameter-name">Accept</td>
+                                        <td class="parameter-type">string</td>
+                                        <td><code>text/csv</code> (default) or <code>application/json</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                Example with cURL
+                            </h3>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-bash">curl -X GET \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Accept: text/csv" \
+  https://api.example.com/files/translated_file1.csv</code></pre>
+                            </div>
+                            
+                            <img src="https://via.placeholder.com/800x400?text=Postman+Screenshot+for+File+Download" alt="Postman file download example" class="api-image">
+                        </div>
+                        
+                        <div class="tab-content" id="get-response">
+                            <h3 class="section-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                Response
+                            </h3>
+                            
+                            <p>CSV content:</p>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-csv">id,original_text,translated_text
+1,"Hello world","Bonjour le monde"
+2,"Good morning","Bonjour"</code></pre>
+                            </div>
+                            
+                            <p>Or JSON format (when Accept: application/json is specified):</p>
+                            
+                            <div class="code-block">
+                                <pre><code class="language-json">{
+    "filename": "translated_file1.csv",
+    "content": [
+        {
+            "id": "1",
+            "original_text": "Hello world",
+            "translated_text": "Bonjour le monde"
+        },
+        {
+            "id": "2",
+            "original_text": "Good morning",
+            "translated_text": "Bonjour"
+        }
+    ]
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="examples" class="api-section">
+                    <h2 class="api-section-title">API Examples</h2>
+                    
+                    <h3>Using Postman</h3>
+                    <p>Here's how to use the API with Postman:</p>
+                    <ol>
+                        <li>First, authenticate to get your token</li>
+                        <li>Create a new request for the endpoint you want to use</li>
+                        <li>Set the Authorization header to "Bearer YOUR_TOKEN"</li>
+                        <li>For file uploads, use the binary body type and select your file</li>
+                    </ol>
+                    
+                    <img src="https://via.placeholder.com/800x400?text=Postman+Workflow+Screenshot" alt="Postman workflow" class="api-image">
+                    
+                    <h3>Using cURL</h3>
+                    <p>Here's a complete workflow using cURL:</p>
+                    
+                    <div class="code-block">
+                        <pre><code class="language-bash"># 1. Authenticate
+TOKEN=$(curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"yourpassword"}' \
+  https://api.example.com/auth/login | jq -r '.token')
+
+# 2. Upload a file
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: text/csv" \
+  --data-binary "@/path/to/file.csv" \
+  https://api.example.com/upload/file.csv
+
+# 3. List files
+curl -X GET \
+  -H "Authorization: Bearer $TOKEN" \
+  https://api.example.com/files
+
+# 4. Download a file
+curl -X GET \
+  -H "Authorization: Bearer $TOKEN" \
+  -o downloaded_file.csv \
+  https://api.example.com/files/file.csv</code></pre>
+                    </div>
+                </section>
+                
+                <div class="api-key-section">
+                    <h3 class="api-key-title">Ready to Get Started?</h3>
+                    <p class="api-key-description">Generate your API key to start integrating with our translation service. Your key will be securely stored and can be regenerated at any time.</p>
+                    <button class="btn" id="generate-api-key">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v4"></path>
+                            <path d="m16 6 2-2"></path>
+                            <path d="M18 12h4"></path>
+                            <path d="m16 18 2 2"></path>
+                            <path d="M12 20v-4"></path>
+                            <path d="m8 18-2 2"></path>
+                            <path d="M6 12H2"></path>
+                            <path d="m8 6-2-2"></path>
+                            <circle cx="12" cy="12" r="4"></circle>
+                        </svg>
+                        Generate API Key
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // Initialize syntax highlighting
+        hljs.highlightAll();
+        
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.dataset.tab;
+                const parent = tab.closest('.api-endpoint');
+                
+                // Update active tab
+                parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                parent.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                parent.querySelector(`#${tabId}`).classList.add('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Update active nav item
+                document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Generate API key button
+        document.getElementById('generate-api-key').addEventListener('click', () => {
+            // In a real app, this would make an API call to generate a key
+            const apiKey = 'trnsl_' + [...Array(32)].map(() => 
+                Math.random().toString(36)[2] || Math.floor(Math.random() * 10)
+            ).join('');
+            
+            // Show the key to the user
+            alert(`Your new API key is:\n\n${apiKey}\n\nPlease store it securely.`);
+        });
+    </script>
+</body>
+</html>
