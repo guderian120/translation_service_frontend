@@ -841,6 +841,7 @@
             presignedUrlEndpoint: cognitoConfig.PresignedUrlEndpoint,
             listFilesEndpoint: cognitoConfig.ListFilesEndpoint,
             userFilesEndpoint: cognitoConfig.UserFilesEndpoint,
+            outputBucketUrl: cognitoConfig.OutputBucketUrl,
         };
 
         // Initialize AWS and Cognito
@@ -933,7 +934,7 @@
     
     try {
         // Direct S3 URL (no API Gateway needed for GET)
-        const fileUrl = `https://translation-app-output-bucket-273223621e27b070.s3.eu-west-1.amazonaws.com/${encodeURIComponent(fileName)}`;
+        const fileUrl = `${outputBucketUrl}/${encodeURIComponent(fileName)}`;
         
         console.log('Fetching file from:', fileUrl); // Debug log
         
@@ -1065,17 +1066,32 @@
                 const response = await axios.get(endpoint, {
                     headers: {
                         'Authorization': `Bearer ${idToken}`,
-                        'Accept': 'application/json' 
-                    },
-                    responseType: 'text' // Get raw response to handle XML
+                        'Accept': 'application/json' // Explicitly request JSON
+                    }
                 });
-                console.log('Files response:', response.data);
-                const files = parseS3XmlResponse(response.data);
-                console.log('Parsed files:', files); // Debug log
-                // Parse the response based on content type
-                renderFiles(files);
-                
+
+                // Handle both JSON and XML responses
+                let files;
+                if (typeof response.data === 'string' && response.data.startsWith('<?xml')) {
+                    // Parse XML response (for direct S3 access)
+                    files = parseS3XmlResponse(response.data);
+                } else {
+                    // Parse JSON response (for Lambda endpoints)
+                    files = response.data.csvFiles || response.data.Contents || [];
+                    
+                    // Normalize to common format
+                    files = files.map(file => ({
+                        name: file.fileName || file.Key,
+                        lastModified: file.lastModified || file.LastModified,
+                        size: file.size || file.Size,
+                        // Add other properties as needed
+                        etag: file.etag || file.ETag,
+                        storageClass: file.storageClass || file.StorageClass
+                    }));
+                }
+
                 console.log('Files loaded:', files);
+                renderFiles(files);
             } catch (error) {
                 console.error('Error loading files:', error);
                 showToast('Failed to load files', 'error');
