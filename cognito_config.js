@@ -10,7 +10,7 @@ const cognitoConfig = {
     ListFilesEndpoint: "https://ldu0h3ka87.execute-api.eu-west-1.amazonaws.com/prod/files",
     UserFilesEndpoint: "https://ldu0h3ka87.execute-api.eu-west-1.amazonaws.com/prod/get_user_uploads",
     OutputBucketUrl: "https://translation-app-output-bucket-4b12e85f71a095b0.s3.eu-west-1.amazonaws.com",
-    apiKeyUrl: ""
+    apiKeyUrl: "https://ldu0h3ka87.execute-api.eu-west-1.amazonaws.com/prod/api_keys"
 
 
 
