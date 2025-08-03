@@ -392,6 +392,9 @@ curl -X GET -H "Authorization: Bearer $TOKEN" ...</pre>
     </div>
     <script src="cognito_config.js"></script>
      <script>
+         const config = {
+                apiKeyUrl: cognitoConfig.apiKeyUrl
+            }
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             // Simple navigation
@@ -548,9 +551,7 @@ curl -X GET -H "Authorization: Bearer $TOKEN" ...</pre>
                 ClientId: cognitoConfig.ClientId
             });
             
-            const config = {
-                apiKeyUrl: cognitoConfig.apiKeyUrl
-            }
+           
             
             const cognitoUser = userPool.getCurrentUser();
             

@@ -933,8 +933,8 @@
     fileModalTitle.textContent = fileName;
     
     try {
-        // Direct S3 URL (no API Gateway needed for GET)
-        const fileUrl = `${outputBucketUrl}/${encodeURIComponent(fileName)}`;
+        
+        const fileUrl = `${config.outputBucketUrl}/${encodeURIComponent(fileName)}`;
         
         console.log('Fetching file from:', fileUrl); // Debug log
         
